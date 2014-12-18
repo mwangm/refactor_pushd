@@ -1,10 +1,11 @@
 require "spec_helper"
+require_relative '../lib/push_daemon'
 
 describe "Push Daemon" do
   let(:socket) { UDPSocket.new }
 
   before(:all) do
-    thread = Thread.new { load "./pushd.rb" }
+    thread = Thread.new { PushDaemon.new.start }
     thread.join(0.05)
   end
 
