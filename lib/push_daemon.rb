@@ -4,12 +4,12 @@ require_relative 'worker'
 class PushDaemon
   def initialize
     @queue = Queue.new
-    @app = App.new(@queue)
+    @server = App.new(@queue)
     @worker = Worker.new
   end
 
   def start
     @worker.start(@queue)
-    @app.start
+    @server.start
   end
 end

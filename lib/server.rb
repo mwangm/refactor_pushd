@@ -3,8 +3,9 @@ class Server
     @socket = UDPSocket.new
   end
 
-  def bind port
+  def listen(port, &process)
     @socket.bind("0.0.0.0", port)
+    loop { process.call receive }
   end
 
   def receive
