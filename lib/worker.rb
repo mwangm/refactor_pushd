@@ -8,15 +8,13 @@ class Worker
 
   def consume queue
     10.times do
-      Thread.new do
-        while data = queue.pop
-          @client.post("https://android.googleapis.com/gcm/send", data,
-                       {
-                           "Authorization" => "key=AIzaSyCABSTd47XeIH",
-                           "Content-Type" => "application/json"
-                       })
-        end
-      end
+      Thread.new { work(queue) }
+    end
+  end
+
+  def work(queue)
+    while job = queue.pop
+      job.run
     end
   end
 end

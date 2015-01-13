@@ -18,10 +18,9 @@ class App
   def process_request data
     case data[0].split.first
       when "PING"
-        Jobs::Ping.new(@server, data).run
+        @queue << Jobs::Ping.new(@server, data)
       when "SEND"
-        json = Jobs::Send.new(@server, data).run
-        @queue << json
+        @queue << Jobs::Send.new(@server, data)
     end
   end
 end
