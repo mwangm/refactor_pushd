@@ -1,7 +1,6 @@
 require "server"
 require "json"
-require "jobs/ping"
-require "jobs/send"
+require_relative "jobs/factory"
 
 class App
   def initialize queue
@@ -16,11 +15,7 @@ class App
   end
 
   def process_request data
-    case data[0].split.first
-      when "PING"
-        @queue << Jobs::Ping.new(@server, data)
-      when "SEND"
-        @queue << Jobs::Send.new(@server, data)
-    end
+    job = ::Jobs.factory(data, @server)
+    @queue << job unless job.nil?
   end
 end
