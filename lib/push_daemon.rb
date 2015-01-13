@@ -9,7 +9,7 @@ class PushDaemon
   end
 
   def start
-    @worker.start(@queue)
+    @worker.consume(@queue)
     @server.start
   end
 end

@@ -6,7 +6,7 @@ class Worker
     @client = HTTPClient.new
   end
 
-  def start queue
+  def consume queue
     10.times do
       Thread.new do
         while data = queue.pop
