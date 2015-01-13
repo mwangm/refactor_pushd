@@ -1,5 +1,7 @@
 require "server"
 require "json"
+require "jobs/ping"
+require "jobs/send"
 
 class App
   def initialize queue
@@ -16,13 +18,9 @@ class App
   def process_request data
     case data[0].split.first
       when "PING"
-        @server.send("PONG", data[1][3], data[1][1])
+        Jobs::Ping.new(@server, data).run
       when "SEND"
-        data[0][5..-1].match(/([a-zA-Z0-9_\-]*) "([^"]*)/)
-        json = JSON.generate({
-                                 "registration_ids" => [$1],
-                                 "data" => {"alert" => $2}
-                             })
+        json = Jobs::Send.new(@server, data).run
         @queue << json
     end
   end
